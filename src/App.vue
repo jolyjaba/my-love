@@ -1,5 +1,23 @@
 <template>
   <div class="pomegranate-theme">
+    <transition name="modal-fade">
+      <div v-if="isModalVisible" class="modal-overlay">
+        <div class="surprise-box" @click="handleOpenSurprise">
+          <div class="envelope" :class="{ 'is-open': isOpen }">
+            <div class="heart">❤️</div>
+            <div class="letter">
+              <p>Для моей Іңкәр</p>
+              <span>(нажми, чтобы открыть)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <audio ref="bgMusic" loop>
+      <source src="/audio/Jigsaw_Falling_into_Place.flac" type="audio/flac">
+    </audio>
+
     <header class="hero">
       <div class="hero-content">
         <h1 class="title">Іңкәр, навсегда в моем сердце</h1>
@@ -19,24 +37,6 @@
         </div>
       </div>
     </header>
-
-    <section class="music-section">
-      <div class="container">
-        <h2 class="section-title">Наша песня</h2>
-        <div class="spotify-wrapper">
-          <iframe 
-            style="border-radius:12px" 
-            src="https://open.spotify.com/embed/track/0YJ9FWWHn9EfnN0lHwbzvV?utm_source=generator&theme=0" 
-            width="100%" 
-            height="152" 
-            frameBorder="0" 
-            allowfullscreen="" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
-          </iframe>
-        </div>
-      </div>
-    </section>
 
     <section class="gallery">
       <div class="container">
@@ -59,10 +59,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { useTimer } from '@/composables/useTimer'
 
 const { timeTogether } = useTimer('2025-11-09T00:00:00')
+
+const isModalVisible = ref(true)
+const isOpen = ref(false)
+const bgMusic = useTemplateRef('bgMusic')
+
+const handleOpenSurprise = () => {
+  isOpen.value = true
+  
+  // Небольшая задержка перед закрытием окна, чтобы успела проиграться анимация
+  setTimeout(() => {
+    isModalVisible.value = false
+    
+    // Запуск музыки
+    if (bgMusic.value) {
+      bgMusic.value.volume = 0.4
+      bgMusic.value.play()
+    }
+  }, 800) 
+}
 
 const photos = ref([
   { url: 'https://via.placeholder.com/600x600/7B1113/FFFFFF?text=Photo+1', date: 'Лето 2023' },
@@ -74,6 +93,95 @@ const photos = ref([
 
 <style scoped lang="scss">
 @use '@/assets/scss/variables' as *;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: $deep-wine; // Глубокий гранатовый фон
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+
+.surprise-box {
+  text-align: center;
+  
+  .envelope {
+    width: 200px;
+    height: 150px;
+    background: $cream;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transition: transform 0.5s ease;
+
+    // Треугольник (крышка) конверта
+    &::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 100px solid $cream;
+      transition: transform 0.5s ease;
+      transform-origin: bottom;
+    }
+
+    &.is-open {
+      transform: translateY(20px);
+      &::before {
+        transform: rotateX(180deg) translateY(10px);
+      }
+    }
+  }
+
+  .heart {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    z-index: 2;
+    animation: pulse 1.5s infinite;
+  }
+
+  .letter {
+    padding: 20px;
+    color: $deep-wine;
+    font-family: $font-heading;
+    
+    p { font-size: 1.2rem; margin-bottom: 5px; font-weight: bold; }
+    span { font-size: 0.8rem; font-family: $font-text; opacity: 0.7; }
+  }
+}
+
+// Плавное появление основного контента
+.animated-reveal {
+  animation: reveal 1.5s ease-out forwards;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: scale(1.05); filter: blur(10px); }
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.2); }
+}
+
+// Анимация исчезновения модалки
+.modal-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.modal-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+}
 
 .container {
   max-width: 1000px;
