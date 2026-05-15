@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+body {
+  margin: 0;
+  font-family: $font-text;
+  background-color: $cream;
+  color: $deep-wine;
+  font-weight: 300;
+}
+
+h1, h2, h3, .title, .section-title, .number {
+  font-family: $font-heading;
+  font-weight: 600;
+}
