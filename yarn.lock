@@ -1747,6 +1747,7 @@ __metadata:
     "@vue/tsconfig": "npm:^0.9.1"
     npm-run-all2: "npm:^8.0.4"
     sass: "npm:^1.99.0"
+    swiper: "npm:^12.1.4"
     typescript: "npm:~6.0.0"
     unplugin-fonts: "npm:^2.0.0"
     vite: "npm:^8.0.8"
@@ -2133,6 +2134,13 @@ __metadata:
   version: 1.2.1
   resolution: "source-map-js@npm:1.2.1"
   checksum: 10c0/7bda1fc4c197e3c6ff17de1b8b2c20e60af81b63a52cb32ec5a5d67a20a7d42651e2cb34ebe93833c5a2a084377e17455854fee3e21e7925c64a51b6a52b0faf
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^12.1.4":
+  version: 12.1.4
+  resolution: "swiper@npm:12.1.4"
+  checksum: 10c0/bbde6c489cae0853f9d7774d69bcb70d5dab1b94f3c1929a81c0d1f1cb9b302bb32101f38ed0b45e77a7158411887bf1ec162afc5335c73d9beb3c4c0ee101a0
   languageName: node
   linkType: hard
 
