@@ -1,4 +1,11 @@
 @use 'variables' as *;
+@use 'modules/typography' as *;
+@use 'modules/layout' as *;
+@use 'modules/counter' as *;
+@use 'modules/quiz' as *;
+@use 'modules/modal' as *;
+@use 'modules/gallery' as *;
+@use 'modules/animations' as *;
 
 body {
   margin: 0;
@@ -6,9 +13,4 @@ body {
   background-color: $cream;
   color: $deep-wine;
   font-weight: 300;
-}
-
-h1, h2, h3, .title, .section-title, .number {
-  font-family: $font-heading;
-  font-weight: 600;
 }

@@ -17,19 +17,19 @@ const quizItems = ref<QuizItem[]>([
   {
     id: 1,
     question: 'В каком месяце началась наша история?',
-    options: ['Апрель', 'Май', 'Июнь'],
-    correct: 1, // Индекс правильного ответа (Май)
-    url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600',
-    caption: 'Тот самый первый день',
+    options: ['Июль', 'Август', 'Июнь'],
+    correct: 1,
+    url: '/public/pictures/IMG_E7875.avif',
+    caption: 'Тот самый первый день ❤️‍🔥',
     unlocked: false
   },
   {
     id: 2,
-    question: 'Какой трек мы слушаем чаще всего?',
-    options: ['Creep', 'Jigsaw Falling Into Place', 'Karma Police'],
-    correct: 1, 
-    url: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?q=80&w=600',
-    caption: 'Музыка, которая нас связала',
+    question: 'Какой трек ты слушаем чаще всего?',
+    options: ['Dracula - Tame Impala', 'Jigsaw Falling Into Place - Radiohead', 'Я так соскучился - Порнофильмы'],
+    correct: 1,
+    url: '/public/pictures/IMG_8138.avif',
+    caption: 'Музыка, которая привязала меня к тебе с первого аккорда 🎶',
     unlocked: false
   },
   {

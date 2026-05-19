@@ -1,0 +1,98 @@
+@use '../variables' as *;
+@use './mixins' as *;
+
+.quiz-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 10000;
+  @include flex-center();
+  padding: 20px;
+}
+
+.quiz-modal-box {
+  @extend %popup-box;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $deep-wine;
+    cursor: pointer;
+  }
+
+  h3 {
+    color: $gold;
+    font-family: $font-heading;
+    margin-top: 0;
+  }
+}
+
+.question-text {
+  font-size: 1.3rem;
+  color: $deep-wine;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .option-btn {
+    @include button-style();
+
+    &:hover {
+      background: $pom-red;
+      color: white;
+      transform: scale(1.02);
+    }
+  }
+}
+
+.error-msg {
+  color: $pom-red;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.wobble-animation {
+  animation: wobble 0.5s ease-in-out;
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .quiz-modal-box {
+    padding: 30px 20px;
+  }
+
+  .options-list {
+    .option-btn {
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+  }
+}
