@@ -9,6 +9,7 @@ type QuizItem = {
   url: string
   caption: string
   unlocked: boolean
+  pdfUrl?: string
 }
 
 const unofficialStartDate = dayjs('2025-08-29T00:00:00')
@@ -124,11 +125,12 @@ const quizItems = ref<QuizItem[]>([
   {
     id: 12,
     question: 'Готова к главному сюрпризу?',
-    options: ['Да', 'Конечно да!', 'Уже не терпится'],
-    correct: 1, // Любой вариант можно сделать правильным
-    url: '/tickets/ticket-5913-7293841a7ec9fd9c.pdf', // Вместо картинки кладем путь к PDF
+    options: ['Уже не терпится'],
+    correct: 0, // Любой вариант можно сделать правильным
+    url: '/pictures/ticket-preview.avif',
     caption: 'Увидимся на концерте! Нас ждет незабываемый вечер 🎟️✨',
-    unlocked: false
+    unlocked: false,
+    pdfUrl: '/tickets/ticket-5913-7293841a7ec9fd9c.pdf' // Добавляем поле для PDF
   }
 ])
 

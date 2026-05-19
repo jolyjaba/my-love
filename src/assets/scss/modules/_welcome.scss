@@ -1,0 +1,181 @@
+@use '../variables' as *;
+@use './mixins' as *;
+
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #1a1a1a;
+  @include flex-center();
+  z-index: 10000;
+  overflow: hidden;
+}
+
+.envelope-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 200px;
+  cursor: pointer;
+  perspective: 1000px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 10px 10px;
+  @include transition(all, 0.3s, ease);
+
+  &:hover:not(.is-open) {
+    transform: translateY(-5px);
+  }
+}
+
+.envelope-back,
+.envelope-front,
+.envelope-flap,
+.letter {
+  position: absolute;
+  inset: 0;
+}
+
+.envelope-back {
+  background: $deep-wine;
+  border-radius: 0 0 10px 10px;
+  z-index: 1;
+}
+
+.envelope-front {
+  background: $pom-red;
+  border-radius: 0 0 10px 10px;
+  z-index: 3;
+  clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.envelope-flap {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #8A1517;
+  clip-path: polygon(0 0, 100% 0, 50% 65%);
+  transform-origin: top;
+  z-index: 4;
+  transition: transform 0.6s ease-in-out, z-index 0s 0.3s;
+}
+
+.wax-seal {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  width: 45px;
+  height: 45px;
+  background: $gold;
+  border-radius: 50%;
+  @include flex-center();
+  color: $pom-red;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  @include transition(opacity, 0.3s);
+}
+
+.pulse-heart {
+  animation: pulse 1.5s infinite;
+}
+
+.letter {
+  left: 15px;
+  right: 15px;
+  bottom: 10px;
+  height: 180px;
+  background: $cream;
+  border-radius: 8px;
+  z-index: 2;
+  @include flex-center(column, center, center);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+.letter-content {
+  text-align: center;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.heart-emoji {
+  display: inline-block;
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  transform-origin: center;
+}
+
+.animated-heart {
+  animation: heartbeat 1.2s infinite;
+}
+
+.letter-text {
+  font-family: $font-heading;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: $pom-red;
+  margin: 0;
+  font-style: italic;
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: $font-text;
+  font-size: 1rem;
+  @include transition(opacity, 0.5s);
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.is-open {
+  .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+  }
+
+  .wax-seal {
+    opacity: 0;
+  }
+
+  .letter {
+    transform: translateY(-110px);
+  }
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.3); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.3); }
+  70% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  .envelope {
+    width: 280px;
+    height: 180px;
+  }
+
+  .letter {
+    height: 160px;
+  }
+
+  .letter-text {
+    font-size: 1.5rem;
+  }
+
+  .is-open .letter {
+    transform: translateY(-90px);
+  }
+}

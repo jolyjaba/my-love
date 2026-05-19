@@ -40,28 +40,57 @@
   background: rgba(0, 0, 0, 0.9);
 }
 
+.download-ticket-btn {
+  margin-top: 25px;
+  background: #7B1113; /* Гранатовый цвет */
+  color: #FFF5F5;
+  border: 1px solid #D4AF37; /* Золотая рамка */
+  padding: 15px 35px;
+  border-radius: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  display: inline-block;
+
+  &:hover {
+    background: #D4AF37;
+    color: #4A0E0E;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3);
+  }
+}
+
 .lightbox-content {
   position: relative;
-  @include flex-center(column, center, center);
-  max-width: 90vw;
-  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 95vw;
+
+  &.is-pdf {
+    width: 90vw; 
+    max-width: 800px; /* Ограничиваем ширину, чтобы билет не растянуло на весь монитор */
+  }
 
   img {
     max-width: 100%;
-    max-height: 75vh;
+    max-height: 70vh;
     object-fit: contain;
     border-radius: 12px;
-    border: 2px solid $gold;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    border: 2px solid #D4AF37;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
   }
 
   .lightbox-caption {
     margin-top: 20px;
     color: $gold;
     font-family: $font-heading;
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
     text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     font-style: italic;
   }
 
@@ -80,6 +109,41 @@
     &:hover {
       opacity: 1;
     }
+  }
+}
+
+.pdf-container {
+  width: 100%;
+  height: 75vh; /* Вот здесь мы задаем большую высоту (75% от высоты экрана) */
+  background: white;
+  border-radius: 12px;
+  border: 2px solid $gold;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.download-link {
+  margin-top: 15px;
+  color: white;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  &:hover { opacity: 1; color: $gold; }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .pdf-container {
+    height: 60vh; /* На мобилках чуть меньше, чтобы влезла подпись */
+  }
+  .lightbox-content.is-pdf {
+    width: 95vw;
   }
 }
 

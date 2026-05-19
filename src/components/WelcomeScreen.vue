@@ -1,47 +1,49 @@
 <template>
-  <div class="welcome-screen" @click="$emit('enter')">
-    <div class="envelope pulse-heart">❤️</div>
-    <p>Для моей Іңкәр</p>
-    <span class="hint">(нажми, чтобы открыть)</span>
+  <div class="welcome-screen">
+    <div class="envelope-wrapper">
+
+      <div class="envelope" :class="{ 'is-open': isOpen }" @click="openEnvelope">
+        <div class="envelope-back"></div>
+
+        <div class="letter">
+          <div class="letter-content">
+            <span class="heart-emoji animated-heart">❤️</span>
+            <p class="letter-text">Для моей Іңкәр</p>
+          </div>
+        </div>
+
+        <div class="envelope-front"></div>
+
+        <div class="envelope-flap">
+          <div class="wax-seal">
+            <i class="fa-solid fa-heart pulse-heart"></i>
+          </div>
+        </div>
+      </div>
+
+      <span class="hint" :class="{ 'fade-out': isOpen }">
+        (нажми на конверт)
+      </span>
+
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineEmits(['enter'])
+import { ref } from 'vue'
+
+const emit = defineEmits(['enter'])
+const isOpen = ref(false)
+
+const openEnvelope = () => {
+  if (isOpen.value) return // Блокируем повторные клики
+
+  isOpen.value = true // Запускаем CSS анимацию открытия
+
+  // Даем 3 секунды: 1.5 сек на саму анимацию + 1.5 сек чтобы успеть прочитать
+  setTimeout(() => {
+    emit('enter')
+  }, 3000)
+}
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/scss/variables' as *;
-
-/* Стартовый экран */
-.welcome-screen {
-  position: fixed;
-  inset: 0;
-  background-color: $deep-wine;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  cursor: pointer;
-  color: $gold;
-  font-family: $font-heading;
-
-  p {
-    font-size: 2.5rem;
-    margin: 20px 0 5px;
-    text-align: center;
-  }
-
-  .hint {
-    font-size: 1rem;
-    font-family: $font-text;
-    opacity: 0.7;
-  }
-}
-
-.pulse-heart {
-  font-size: 5rem;
-  animation: pulse 1.5s infinite;
-}
-</style>

@@ -25,15 +25,19 @@
       <div v-if="enlargedQuizItem" class="quiz-modal-overlay lightbox" @click.self="closeEnlargedPhoto">
         <div class="lightbox-content">
           <button class="lightbox-close-btn" @click="closeEnlargedPhoto">✕</button>
-          <iframe
-            v-if="enlargedQuizItem.url.endsWith('.pdf')"
-            :src="enlargedQuizItem.url" 
-            width="100%" 
-            height="60vh" 
-            style="border: 2px solid #D4AF37; border-radius: 12px;"
-          />
-          <img v-else :src="enlargedQuizItem.url" alt="Увеличенное фото">
+          
+          <img :src="enlargedQuizItem.url" alt="Воспоминание">
+          
           <p class="lightbox-caption">{{ enlargedQuizItem.caption }}</p>
+
+          <a 
+            v-if="enlargedQuizItem.pdfUrl" 
+            :href="enlargedQuizItem.pdfUrl" 
+            target="_blank" 
+            class="download-ticket-btn"
+          >
+            Открыть настоящий билет 📥
+          </a>
         </div>
       </div>
     </transition>

@@ -8,16 +8,3 @@
 <script setup lang="ts">
 // Здесь пока нет сложной логики, просто шаблон
 </script>
-
-<style scoped lang="scss">
-@use '@/assets/scss/variables' as *;
-
-.title {
-  color: white;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-.subtitle {
-  color: $cream;
-}
-</style>
