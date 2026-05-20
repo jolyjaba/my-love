@@ -11,6 +11,9 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@tsparticles/engine": "^4.0.5",
+    "@tsparticles/slim": "^4.0.5",
+    "@tsparticles/vue3": "^4.0.5",
     "dayjs": "^1.11.20",
     "swiper": "^12.1.4",
     "vue": "^3.5.32"

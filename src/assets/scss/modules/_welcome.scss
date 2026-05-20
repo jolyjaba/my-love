@@ -1,10 +1,11 @@
+@use 'sass:math';
 @use '../variables' as *;
 @use './mixins' as *;
 
 .welcome-screen {
   position: fixed;
   inset: 0;
-  background-color: #1a1a1a;
+  background-color: $bg-dark;
   @include flex-center();
   z-index: 10000;
   overflow: hidden;
@@ -23,8 +24,8 @@
   height: 200px;
   cursor: pointer;
   perspective: 1000px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  border-radius: 0 0 10px 10px;
+  @include shadow(strong);
+  border-radius: 0 0 math.div($radius, 2) math.div($radius, 2);
   @include transition(all, 0.3s, ease);
 
   &:hover:not(.is-open) {
@@ -48,7 +49,7 @@
 
 .envelope-front {
   background: $pom-red;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 math.div($radius, 2) math.div($radius, 2);
   z-index: 3;
   clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
   pointer-events: none;
@@ -92,10 +93,10 @@
   bottom: 10px;
   height: 180px;
   background: $cream;
-  border-radius: 8px;
+  border-radius: math.div($radius, 2);
   z-index: 2;
   @include flex-center(column, center, center);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  @include shadow(soft);
   overflow: hidden;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
 }

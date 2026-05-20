@@ -1,15 +1,31 @@
 @use '../variables' as *;
 @use './mixins' as *;
 
-.presentation-wrapper {
-  height: 100dvh;
-  width: 100vw;
-  background: $cream;
+#app-root {
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
 }
 
-.my-swiper {
+.presentation-wrapper {
+  min-height: 100dvh;
+  width: 100vw;
+  background: radial-gradient(circle at center, $pom-red 0%, $deep-wine 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.global-particles-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main-swiper {
   width: 100%;
-  height: 100%;
+  height: 100dvh;
+  z-index: 1;
 
   .swiper-pagination-bullet {
     background: $gold;
@@ -26,7 +42,40 @@
   .swiper-button-prev {
     color: $gold;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.3s ease, transform 0.2s ease;
+
+    @media (max-width: $bp-sm) {
+      transform: scale(0.7);
+    }
+
+    &:hover {
+      transform: scale(1.1);
+
+      @media (max-width: $bp-sm) {
+        transform: scale(0.8);
+      }
+    }
   }
+
+  &.is-next-locked .swiper-button-next {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+}
+
+.swiper-slide {
+  @include flex-center();
+  background: transparent;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .slide {
@@ -48,29 +97,8 @@
   @include hide-scrollbar;
 }
 
-.slide-scrollable {
-  align-items: flex-start;
-  padding-top: 80px;
-}
-
-.bg-hero {
-  background: linear-gradient(rgba($deep-wine, 0.7), rgba($deep-wine, 0.7)),
-    url('https://images.unsplash.com/photo-1530103862676-fa396657176c?q=80&w=2070') center/cover;
-  color: white;
-}
-
-.bg-dark {
-  background-color: $deep-wine;
-  color: $cream;
-}
-
-.bg-cream {
-  background-color: $cream;
-  color: $deep-wine;
-}
-
-@media (max-width: 768px) {
-  .my-swiper {
+@media (max-width: $bp-md) {
+  .main-swiper {
     .swiper-button-next,
     .swiper-button-prev {
       display: none !important;

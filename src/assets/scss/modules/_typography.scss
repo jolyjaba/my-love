@@ -10,12 +10,15 @@
   font-style: italic;
   margin-bottom: 10px;
   line-height: 1.1;
+  color: rgba($white, 0.95);
 }
 
 .subtitle {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-family: $font-text;
   opacity: 0.9;
+  color: rgba($cream, 0.92);
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.35);
 }
 
 .section-title {
@@ -24,14 +27,4 @@
   margin-bottom: 30px;
   font-family: $font-heading;
   line-height: 1.2;
-}
-
-.bg-cream .section-title {
-  color: $pom-red;
-}
-
-.final-text {
-  font-family: $font-heading;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-style: italic;
 }

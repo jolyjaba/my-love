@@ -1,63 +1,135 @@
 <template>
-  <div class="pomegranate-theme">
-    <transition name="modal-fade">
-      <WelcomeScreen v-if="!isEntered" @enter="handleEnter" />
-    </transition>
-    <audio ref="bgMusic" loop>
-      <source src="/audio/Jigsaw_Falling_into_Place.flac" type="audio/flac">
+  <div id="app-root">
+    
+    <audio id="bg-music" loop>
+      <source src="/audio/Jigsaw_Falling_into_Place.flac" type="audio/flac" />
     </audio>
-    <main v-if="isEntered" class="animated-reveal presentation-wrapper">
-      <swiper :modules="modules" effect="fade" :pagination="{ clickable: true }" :navigation="true" :speed="1000"
-        class="my-swiper">
-        <swiper-slide class="slide bg-hero">
-          <HeroSlide />
+
+    <transition name="fade">
+      <WelcomeScreen v-if="!isEntered" @enter="startApp" />
+    </transition>
+
+    <div v-if="isEntered" class="presentation-wrapper">
+      
+      <vue-particles
+        id="global-particles"
+        :options="particlesOptions"
+        class="global-particles-layer"
+      />
+
+      <QuizModal />
+
+      <swiper 
+        :modules="[Navigation, Pagination]"
+        :navigation="true"
+        :pagination="{ clickable: true, dynamicBullets: true }"
+        :allow-slide-next="canSwipeNext" 
+        :allow-slide-prev="true"
+        :speed="600"
+        @slideChange="onSlideChange"
+        class="main-swiper"
+        :class="{ 'is-next-locked': !canSwipeNext }"
+      >
+        
+        <swiper-slide><HeroSlide /></swiper-slide>
+        <swiper-slide><CounterSlide /></swiper-slide>
+
+        <swiper-slide v-for="item in quizItems" :key="item.id">
+          <QuizSlide :item="item" />
         </swiper-slide>
-        <swiper-slide class="slide bg-dark">
-          <CounterSlide />
-        </swiper-slide>
-        <swiper-slide class="slide bg-cream slide-scrollable">
-          <QuizSlide />
-        </swiper-slide>
+
       </swiper>
-    </main>
-    <QuizModal />
+    </div>
+    
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef } from 'vue'
-// Импорт Swiper и его стилей
+import { ref, computed } from 'vue'
+
+// Swiper
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { EffectFade, Pagination, Navigation, Keyboard } from 'swiper/modules'
-import { useQuiz } from '@/composables/useQuiz'
+import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
-import 'swiper/css/effect-fade'
-import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import QuizModal from '@/components/QuizModal.vue'
+import 'swiper/css/pagination'
+
+// Компоненты
 import WelcomeScreen from '@/components/WelcomeScreen.vue'
-import QuizSlide from '@/components/slides/QuizSlide.vue'
+import QuizModal from '@/components/QuizModal.vue'
 import HeroSlide from '@/components/slides/HeroSlide.vue'
 import CounterSlide from '@/components/slides/CounterSlide.vue'
+import QuizSlide from '@/components/slides/QuizSlide.vue'
 
-// Регистрируем модули для компонента Swiper
-const modules = [EffectFade, Pagination, Navigation, Keyboard]
+// Логика квиза и типы
+import { useQuiz } from '@/composables/useQuiz'
+import type { ISourceOptions } from "@tsparticles/engine"
+
+const { quizItems, loadProgress } = useQuiz()
 
 const isEntered = ref(false)
-const bgMusic = useTemplateRef('bgMusic')
 
-const { loadProgress } = useQuiz()
+const startApp = () => {
+  isEntered.value = true
+  loadProgress() // Загружаем прогресс из localStorage
+  
+  const audio = document.getElementById('bg-music') as HTMLAudioElement
+  if (audio) {
+    audio.volume = 0.5
+    audio.play().catch(e => console.log('Автоплей заблокирован браузером', e))
+  }
+}
 
-onMounted(() => {
-  loadProgress() // Загружаем прогресс квиза при загрузке приложения
+// === УПРАВЛЕНИЕ СВАЙПОМ (Блокировка квеста) ===
+const currentSwiperIndex = ref(0)
+const QUIZ_SLIDES_OFFSET = 2 // Количество слайдов ДО начала квиза (Hero + Counter)
+
+const onSlideChange = (swiper: any) => {
+  currentSwiperIndex.value = swiper.activeIndex
+}
+
+const canSwipeNext = computed(() => {
+  const currentQuizIndex = currentSwiperIndex.value - QUIZ_SLIDES_OFFSET
+  
+  if (currentQuizIndex < 0) return true // Разрешаем свайп на интро-слайдах
+  if (currentQuizIndex >= quizItems.value.length) return true // Квиз пройден
+  
+  return quizItems.value[currentQuizIndex]?.unlocked // Свайп только если вопрос решен
 })
 
-const handleEnter = () => {
-  isEntered.value = true
-  if (bgMusic.value) {
-    bgMusic.value.volume = 0.4
-    bgMusic.value.play().catch(e => console.log("Audio play blocked", e))
-  }
+const particlesOptions: ISourceOptions = {
+  background: { color: { value: "transparent" } },
+  fpsLimit: 120,
+  interactivity: {
+    detectsOn: "window",
+    events: {
+      onHover: { enable: true, mode: "repel" },
+    },
+    modes: { repel: { distance: 100, duration: 0.4 } },
+  },
+  particles: {
+    color: { value: "#D4AF37" },
+    move: {
+      direction: "top",
+      enable: true,
+      outModes: { default: "out" },
+      random: true,
+      speed: { min: 1, max: 3 },
+      straight: false,
+    },
+    number: { density: { enable: true, width: 800 }, value: 80 },
+    opacity: {
+      value: { min: 0.1, max: 0.8 }, // <-- Движок возьмет min и max отсюда
+      animation: { enable: true, speed: 3, sync: false } // Убрали minimumValue
+    },
+    shape: { type: "circle" },
+    size: {
+      value: { min: 1, max: 3 }, // <-- И отсюда
+      animation: { enable: true, speed: 5, sync: false } // Убрали minimumValue
+    },
+    wobble: { enable: true, distance: 5, speed: 10 }
+  },
+  detectRetina: true,
 }
 </script>
 

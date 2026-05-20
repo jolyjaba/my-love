@@ -1,13 +1,12 @@
+@use 'sass:math';
 @use '../variables' as *;
 @use './mixins' as *;
 
 .quiz-modal-overlay {
-  position: fixed;
-  inset: 0;
+  @extend %overlay-cover;
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(5px);
   z-index: 10000;
-  @include flex-center();
   padding: 20px;
 }
 
@@ -41,25 +40,16 @@
 }
 
 .download-ticket-btn {
+  @include cta-button($pom-red, $cream, rgba($gold, 0.6), 30px);
   margin-top: 25px;
-  background: #7B1113; /* Гранатовый цвет */
-  color: #FFF5F5;
-  border: 1px solid #D4AF37; /* Золотая рамка */
   padding: 15px 35px;
-  border-radius: 30px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-  display: inline-block;
+  @include shadow(soft);
 
   &:hover {
-    background: #D4AF37;
-    color: #4A0E0E;
+    background: $gold;
+    color: $deep-wine;
     transform: translateY(-3px);
-    box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 15px 25px rgba($gold, 0.3);
   }
 }
 
@@ -72,17 +62,17 @@
   max-width: 95vw;
 
   &.is-pdf {
-    width: 90vw; 
-    max-width: 800px; /* Ограничиваем ширину, чтобы билет не растянуло на весь монитор */
+    width: 90vw;
+    max-width: 800px;
   }
 
   img {
     max-width: 100%;
     max-height: 70vh;
     object-fit: contain;
-    border-radius: 12px;
-    border: 2px solid #D4AF37;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    border-radius: math.div($radius, 1.25);
+    border: 2px solid $gold;
+    @include shadow(strong);
   }
 
   .lightbox-caption {
@@ -104,7 +94,7 @@
     font-size: 2rem;
     cursor: pointer;
     opacity: 0.8;
-    transition: opacity 0.2s;
+    @include transition(opacity, 0.2s);
 
     &:hover {
       opacity: 1;
@@ -114,12 +104,12 @@
 
 .pdf-container {
   width: 100%;
-  height: 75vh; /* Вот здесь мы задаем большую высоту (75% от высоты экрана) */
-  background: white;
-  border-radius: 12px;
+  height: 75vh;
+  background: $white;
+  border-radius: math.div($radius, 1.25);
   border: 2px solid $gold;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  @include shadow(strong);
 }
 
 .pdf-frame {

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import dayjs from 'dayjs'
 
-type QuizItem = {
+export type QuizItem = {
   id: number
   question: string
   options: (string | number)[]

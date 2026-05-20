@@ -20,11 +20,27 @@
   transition: #{$properties} $duration $timing;
 }
 
-@mixin button-style($bg: white, $border: rgba($pom-red, 0.3), $color: $deep-wine) {
+@mixin responsive-grid($min-width, $gap: 20px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+@mixin shadow($type: soft) {
+  @if $type == soft {
+    box-shadow: $shadow-soft;
+  } @else if $type == strong {
+    box-shadow: $shadow-strong;
+  } @else if $type == gold {
+    box-shadow: $shadow-gold;
+  }
+}
+
+@mixin button-style($bg: white, $border: rgba($pom-red, 0.3), $color: $deep-wine, $radius: 10px) {
   background: $bg;
   border: 1px solid $border;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: $radius;
   font-family: $font-text;
   font-size: 1rem;
   color: $color;
@@ -32,19 +48,28 @@
   @include transition(all, 0.2s);
 }
 
+@mixin cta-button($bg: $pom-red, $color: $cream, $border: rgba($gold, 0.5), $radius: 30px) {
+  @include button-style($bg, $border, $color, $radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 %card-base {
   position: relative;
   aspect-ratio: 4/5;
-  border-radius: 12px;
+  border-radius: $radius;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: $shadow-soft;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 %glass-panel {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba($gold, 0.3);
   padding: 30px 20px;
   border-radius: 20px;
   backdrop-filter: blur(5px);
@@ -55,5 +80,11 @@
   border: 2px solid $gold;
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: $shadow-strong;
+}
+
+%overlay-cover {
+  position: fixed;
+  inset: 0;
+  @include flex-center();
 }
